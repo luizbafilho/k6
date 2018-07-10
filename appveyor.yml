@@ -45,7 +45,8 @@ build_script:
 
 deploy_script:
   # Checking if the build has started by pushed tag
-  - if "%APPVEYOR_REPO_TAG%" == "false" (appveyor exit)
+  - ps: |
+      if ( $env:APPVEYOR_REPO_TAG -eq "false" ) { Exit-AppveyorBuild }
   # Publishing the msi
   - 'curl -H "X-GPG-PASSPHRASE: %GPG_PASSPHRASE%" -T k6.msi "https://%BINTRAY_USER%:%BINTRAY_KEY%@api.bintray.com/content/luizbafilho/windows/k6/%VERSION%/k6-v%VERSION%-amd64.msi?publish=1&override=1"'
   - 'curl -H "X-GPG-PASSPHRASE: %GPG_PASSPHRASE%" -T k6.msi "https://%BINTRAY_USER%:%BINTRAY_KEY%@api.bintray.com/content/luizbafilho/windows/k6/latest/k6-latest-amd64.msi?publish=1&override=1"'
