@@ -1,5 +1,5 @@
 image: Visual Studio 2017
-clone_folder: 'c:\gopath\src\github.com\%APPVEYOR_REPO_NAME%'
+clone_folder: 'c:\gopath\src\github.com\loadimpact\k6'
 
 # Start builds on tags only (GitHub and BitBucket)
 skip_non_tags: true
@@ -38,8 +38,8 @@ build_script:
 
 deploy_script:
   # Publishing the msi
-  - 'curl -H "X-GPG-PASSPHRASE: %GPG_PASSPHRASE%" -T k6.msi "https://%BINTRAY_USER%:%BINTRAY_KEY%@api.bintray.com/content/loadimpact/windows/k6/%VERSION%/k6-v%VERSION%-amd64.msi?publish=1&override=1"'
-  - 'curl -H "X-GPG-PASSPHRASE: %GPG_PASSPHRASE%" -T k6.msi "https://%BINTRAY_USER%:%BINTRAY_KEY%@api.bintray.com/content/loadimpact/windows/k6/latest/k6-latest-amd64.msi?publish=1&override=1"'
+  - 'curl -H "X-GPG-PASSPHRASE: %GPG_PASSPHRASE%" -T k6.msi "https://%BINTRAY_USER%:%BINTRAY_KEY%@api.bintray.com/content/luizbafilho/windows/k6/%VERSION%/k6-v%VERSION%-amd64.msi?publish=1&override=1"'
+  - 'curl -H "X-GPG-PASSPHRASE: %GPG_PASSPHRASE%" -T k6.msi "https://%BINTRAY_USER%:%BINTRAY_KEY%@api.bintray.com/content/luizbafilho/windows/k6/latest/k6-latest-amd64.msi?publish=1&override=1"'
   - ps: |
       # Create Chocolately Package
       mkdir .\k6.portable
@@ -51,4 +51,4 @@ deploy_script:
       (Get-Content '.\k6.portable.nuspec' -Raw).Replace("<version>__REPLACE__</version>", "<version>$($env:APPVEYOR_REPO_TAG_NAME.substring(1))</version>") | Out-File '.\k6.portable.nuspec'
       choco pack
   # Publising the chocolatey package
-  - 'curl -H "X-GPG-PASSPHRASE: %GPG_PASSPHRASE%" -T .\k6.portable.%VERSION%.nupkg "https://%BINTRAY_USER%:%BINTRAY_KEY%@api.bintray.com/content/loadimpact/choco/k6.portable/%VERSION%/k6.portable.%VERSION%.nupkg?publish=1&override=1"'
+  - 'curl -H "X-GPG-PASSPHRASE: %GPG_PASSPHRASE%" -T .\k6.portable.%VERSION%.nupkg "https://%BINTRAY_USER%:%BINTRAY_KEY%@api.bintray.com/content/luizbafilho/choco/k6.portable/%VERSION%/k6.portable.%VERSION%.nupkg?publish=1&override=1"'
